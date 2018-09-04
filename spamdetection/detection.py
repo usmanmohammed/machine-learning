@@ -72,3 +72,17 @@ messagesTfidf = TfidfTransformer().fit(messagesBagofWords).transform(messagesBag
 
 # train the model using naive bayes algorithm
 spamDetector = MultinomialNB().fit(messagesTfidf, messages['class'].values)
+
+# test message
+example = ['England v Macedonia - dont miss the goals/team news. Txt ENGLAND to 99999']
+
+# result
+checkResult = spamDetector.predict(trainingVector.transform(example))[0]
+print('The message [',example[0],'] has been classified as', checkResult)
+
+# test message
+example2 = ['Everything is fine. Okay mmom']
+
+# result
+checkResult2 = spamDetector.predict(trainingVector.transform(example2))[0]
+print('The message [',example2[0],'] has been classified as', checkResult2)
