@@ -63,3 +63,12 @@ print(messages['message'][9])
 # identify repeated words
 print('First word that appears twice: ', trainingVector.get_feature_names()[3433])
 print('First word that appears trice: ', trainingVector.get_feature_names()[5182])
+
+# bag of words for the entire training set
+messagesBagofWords = trainingVector.transform(messages['message'])
+
+# weight of words in the entire training dataset - Term Frequecy and Inverse Document Frequency
+messagesTfidf = TfidfTransformer().fit(messagesBagofWords).transform(messagesBagofWords)
+
+# train the model using naive bayes algorithm
+spamDetector = MultinomialNB().fit(messagesTfidf, messages['class'].values)
