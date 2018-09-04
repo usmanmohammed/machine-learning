@@ -32,6 +32,34 @@ messages = pandas.read_csv('SMSSpamCollection', sep='\t',
                            quoting=csv.QUOTE_NONE,
                            names=["class", "message"])
 
-
 # print first five records
 print(messages.head())
+
+# groupby class and count
+print(messages.groupby('class').count())
+
+# split messages into individual words
+def SplitIntoWords(messages):
+    return TextBlob(messages).words
+
+# this is what the first 5 records look when splitted into individual words
+print(messages.message.head().apply(SplitIntoWords))
+
+# convert each word into its base form
+def WordsIntoBaseForm(message):
+    words = TextBlob(message.lower()).words
+    return [word.lemma for word in words]
+
+# convert each word into unique vector
+trainingVector = CountVectorizer(analyzer=WordsIntoBaseForm).fit(messages['message'])
+
+# view occurenct of words in an arbitrary vector
+message10 = trainingVector.transform([messages['message'][9]])
+print(message10)
+
+# print message10 for comparism
+print(messages['message'][9])
+
+# identify repeated words
+print('First word that appears twice: ', trainingVector.get_feature_names()[3433])
+print('First word that appears trice: ', trainingVector.get_feature_names()[5182])
